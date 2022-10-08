@@ -6,7 +6,7 @@
  *
  */
 import React, { useCallback, useRef, useEffect } from "react";
-import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, Text, SafeAreaView, } from "react-native";
+import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, SafeAreaView, } from "react-native";
 import ImageItem from "./components/ImageItem/ImageItem";
 import ImageDefaultHeader from "./components/ImageDefaultHeader";
 import StatusBarManager from "./components/StatusBarManager";
@@ -62,7 +62,6 @@ function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClos
             ? `${imageSrc}`
             : imageSrc.uri}/>
         {typeof FooterComponent !== "undefined" && (<Animated.View style={[styles.footer, { transform: footerTransform }]}>
-            <Text style={{ color: '#fff' }}>a/a</Text>
             {React.createElement(FooterComponent, {
         imageIndex: currentImageIndex,
     })}
