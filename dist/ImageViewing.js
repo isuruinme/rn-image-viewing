@@ -6,7 +6,7 @@
  *
  */
 import React, { useCallback, useRef, useEffect } from "react";
-import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, SafeAreaView, } from "react-native";
+import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, ActivityIndicator, } from "react-native";
 import ImageItem from "./components/ImageItem/ImageItem";
 import ImageDefaultHeader from "./components/ImageDefaultHeader";
 import StatusBarManager from "./components/StatusBarManager";
@@ -20,6 +20,7 @@ const SCREEN = Dimensions.get("screen");
 const SCREEN_WIDTH = SCREEN.width;
 function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClose, onLongPress = () => { }, onImageIndexChange, animationType = DEFAULT_ANIMATION_TYPE, backgroundColor = DEFAULT_BG_COLOR, presentationStyle, swipeToCloseEnabled, doubleTapToZoomEnabled, delayLongPress = DEFAULT_DELAY_LONG_PRESS, HeaderComponent, FooterComponent, transformRotate }) {
     const imageList = useRef(null);
+    const [rotate, setRotation] = React.useState('0deg');
     const [currentImageIndex, onScroll] = useImageIndexChange(imageIndex, SCREEN);
     const [headerTransform, footerTransform, toggleBarsVisible] = useAnimatedComponents();
     const onClose = () => {
@@ -48,13 +49,14 @@ function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClos
         imageIndex: currentImageIndex,
     })) : (<ImageDefaultHeader onRequestClose={onRequestCloseEnhanced}/>)}
         </Animated.View>
+        <View style={{ flex: 1, justifyContent: "center", backgroundColor: 'red' }}>
+          <ActivityIndicator size={'large'} animating={true} style={{ position: 'absolute', zIndex: 999, bottom: 0, top: 0 }}/>
+        </View>
         <VirtualizedList ref={imageList} data={images} horizontal pagingEnabled windowSize={2} initialNumToRender={1} maxToRenderPerBatch={1} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} initialScrollIndex={imageIndex} getItem={(_, index) => images[index]} getItemCount={() => images.length} getItemLayout={(_, index) => ({
         length: SCREEN_WIDTH,
         offset: SCREEN_WIDTH * index,
         index,
-    })} renderItem={({ item: imageSrc }) => (<SafeAreaView style={images.length <= 1 && transformRotate ? { transform: [{ rotate: `${transformRotate.toString()}deg` }] } : {}}>
-              <ImageItem onZoom={onZoom} imageSrc={imageSrc} onRequestClose={onRequestCloseEnhanced} onLongPress={onLongPress} delayLongPress={delayLongPress} swipeToCloseEnabled={swipeToCloseEnabled} doubleTapToZoomEnabled={doubleTapToZoomEnabled}/>
-            </SafeAreaView>)} onMomentumScrollEnd={onScroll} 
+    })} renderItem={({ item: imageSrc }) => (<ImageItem onZoom={onZoom} imageSrc={imageSrc} onRequestClose={onRequestCloseEnhanced} onLongPress={onLongPress} delayLongPress={delayLongPress} swipeToCloseEnabled={swipeToCloseEnabled} doubleTapToZoomEnabled={doubleTapToZoomEnabled}/>)} onMomentumScrollEnd={onScroll} 
     //@ts-ignore
     keyExtractor={(imageSrc, index) => keyExtractor
         ? keyExtractor(imageSrc, index)

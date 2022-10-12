@@ -6,7 +6,7 @@
  *
  */
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, ScrollView, Dimensions, StyleSheet, } from "react-native";
+import { Animated, ScrollView, Dimensions, StyleSheet, Image, } from "react-native";
 import useImageDimensions from "../../hooks/useImageDimensions";
 import usePanResponder from "../../hooks/usePanResponder";
 import { getImageStyles, getImageTransform } from "../../utils";
@@ -48,7 +48,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
         inputRange: [-SWIPE_CLOSE_OFFSET, 0, SWIPE_CLOSE_OFFSET],
         outputRange: [0.7, 1, 0.7],
     });
-    const imageStylesWithOpacity = { ...imagesStyles, opacity: imageOpacity };
+    const imageStylesWithOpacity = { ...imagesStyles, opacity: imageOpacity, resizeMode: 'contain' };
     const onScrollEndDrag = ({ nativeEvent, }) => {
         var _a, _b, _c, _d, _e, _f;
         const velocityY = (_c = (_b = (_a = nativeEvent) === null || _a === void 0 ? void 0 : _a.velocity) === null || _b === void 0 ? void 0 : _b.y, (_c !== null && _c !== void 0 ? _c : 0));
@@ -68,7 +68,9 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
         onScroll,
         onScrollEndDrag,
     })}>
-      <Animated.Image {...panHandlers} source={imageSrc} style={imageStylesWithOpacity} onLoad={onLoaded}/>
+      <Animated.View style={imageStylesWithOpacity}>
+        <Image {...panHandlers} style={styles.imageStyle} source={imageSrc} onLoad={onLoaded}/>
+      </Animated.View>
       {(!isLoaded || !imageDimensions) && <ImageLoading />}
     </ScrollView>);
 };
@@ -80,5 +82,8 @@ const styles = StyleSheet.create({
     imageScrollContainer: {
         height: SCREEN_HEIGHT * 2,
     },
+    imageStyle: {
+        height: '100%', width: '100%'
+    }
 });
 export default React.memo(ImageItem);

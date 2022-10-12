@@ -6,7 +6,7 @@
  *
  */
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, Dimensions, ScrollView, StyleSheet, View, TouchableWithoutFeedback, } from "react-native";
+import { Animated, Dimensions, ScrollView, StyleSheet, View, TouchableWithoutFeedback, Image } from "react-native";
 import useDoubleTapToZoom from "../../hooks/useDoubleTapToZoom";
 import useImageDimensions from "../../hooks/useImageDimensions";
 import { getImageStyles, getImageTransform } from "../../utils";
@@ -62,7 +62,9 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
     })}>
         {(!loaded || !imageDimensions) && <ImageLoading />}
         <TouchableWithoutFeedback onPress={doubleTapToZoomEnabled ? handleDoubleTap : undefined} onLongPress={onLongPressHandler} delayLongPress={delayLongPress}>
-          <Animated.Image source={imageSrc} style={imageStylesWithOpacity} onLoad={() => setLoaded(true)}/>
+          <Animated.View style={imageStylesWithOpacity}>
+            <Image source={imageSrc} onLoad={() => setLoaded(true)}/>
+          </Animated.View>
         </TouchableWithoutFeedback>
       </ScrollView>
     </View>);
@@ -75,5 +77,8 @@ const styles = StyleSheet.create({
     imageScrollContainer: {
         height: SCREEN_HEIGHT,
     },
+    imageStyle: {
+        height: '100%', width: '100%'
+    }
 });
 export default React.memo(ImageItem);
