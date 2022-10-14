@@ -6,7 +6,7 @@
  *
  */
 import React, { useCallback, useRef, useEffect } from "react";
-import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, ActivityIndicator, } from "react-native";
+import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, } from "react-native";
 import ImageItem from "./components/ImageItem/ImageItem";
 import ImageDefaultHeader from "./components/ImageDefaultHeader";
 import StatusBarManager from "./components/StatusBarManager";
@@ -49,9 +49,6 @@ function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClos
         imageIndex: currentImageIndex,
     })) : (<ImageDefaultHeader onRequestClose={onRequestCloseEnhanced}/>)}
         </Animated.View>
-        <View style={{ flex: 1, justifyContent: "center", backgroundColor: 'red' }}>
-          <ActivityIndicator size={'large'} animating={true} style={{ position: 'absolute', zIndex: 999, bottom: 0, top: 0 }}/>
-        </View>
         <VirtualizedList ref={imageList} data={images} horizontal pagingEnabled windowSize={2} initialNumToRender={1} maxToRenderPerBatch={1} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} initialScrollIndex={imageIndex} getItem={(_, index) => images[index]} getItemCount={() => images.length} getItemLayout={(_, index) => ({
         length: SCREEN_WIDTH,
         offset: SCREEN_WIDTH * index,
