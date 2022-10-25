@@ -59,7 +59,6 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
             onRequestClose();
         }
     };
-    console.log(imageSrc);
     const onScroll = ({ nativeEvent, }) => {
         var _a, _b, _c;
         const offsetY = (_c = (_b = (_a = nativeEvent) === null || _a === void 0 ? void 0 : _a.contentOffset) === null || _b === void 0 ? void 0 : _b.y, (_c !== null && _c !== void 0 ? _c : 0));
@@ -69,7 +68,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
         onScroll,
         onScrollEndDrag,
     })}>
-      <Animated.View style={imageStylesWithOpacity}>
+      <Animated.View style={imageStylesWithOpacity} {...panHandlers}>
         <Image source={imageSrc} onLoad={onLoaded} style={styles.imageStyle}/>
       </Animated.View>
       {(!isLoaded || !imageDimensions) && <ImageLoading />}
